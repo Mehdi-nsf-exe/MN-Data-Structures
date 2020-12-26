@@ -2,6 +2,7 @@ package mnds.list;
 
 import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
 /**
  * The array implementation of the List ADT.
@@ -146,7 +147,10 @@ public class ArrayList<E> implements List<E> {
 		}
 
 		@Override
-		public E next() {
+		public E next() throws NoSuchElementException {
+			if (!hasNext()) {
+				throw new NoSuchElementException("No next element");
+			}
 			current = next;
 			next++;
 			return list.elements[current];
@@ -158,7 +162,10 @@ public class ArrayList<E> implements List<E> {
 		}
 
 		@Override
-		public E previous() {
+		public E previous() throws NoSuchElementException {
+			if (!hasPrevious()) {
+				throw new NoSuchElementException("No previous element");
+			}
 			current = next - 1;
 			next--;
 			return list.elements[current];
@@ -181,7 +188,10 @@ public class ArrayList<E> implements List<E> {
 		}
 
 		@Override
-		public void set(E element) {
+		public void set(E element) throws IllegalStateException {
+			if (current == INVALID_CURRENT) {
+				throw new IllegalStateException();
+			}
 			list.elements[current] = element;
 		}
 		
