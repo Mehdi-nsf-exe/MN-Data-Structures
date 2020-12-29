@@ -48,6 +48,7 @@ public class ArrayQueue<E> implements Queue<E> {
 			for (int i = 0; i < elementsCount; i++) {
 				newArray[i] = elements[(front + i) % elements.length];
 			}
+			elements = newArray;
 			front = 0;
 			end = front + elementsCount - 1;
 		}
