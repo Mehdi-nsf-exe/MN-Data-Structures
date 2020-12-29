@@ -15,7 +15,7 @@ public class ArrayQueue<E> implements Queue<E> {
 	private int end;
 	private E[] elements;
 	
-	//The inicial capacity of the array of elements if no initial capacity is specified 
+	//The initial capacity of the array of elements if no initial capacity is specified 
 	private static final int DEFAULT_INITIAL_CAPACITY = 8;
 	
 	/**
