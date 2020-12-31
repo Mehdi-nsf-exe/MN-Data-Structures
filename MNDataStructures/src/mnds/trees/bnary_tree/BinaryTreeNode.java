@@ -77,22 +77,4 @@ public interface BinaryTreeNode<E> {
 	 * @return The left branch of the node.
 	 */
 	public BinaryTree<E> cutLeftBranch();
-	
-	/**
-	 * Goes over all the nodes in pre-order.
-	 * @param visitor The object with the method visit.
-	 */
-	public void preorderVisit(NodeVisitor<E> visitor);
-	
-	/**
-	 * Goes over all the nodes in in-order.
-	 * @param visitor The object with the method visit.
-	 */
-	public void inorderVisit(NodeVisitor<E> visitor);
-	
-	/**
-	 * Goes over all the nodes in post-order.
-	 * @param visitor The object with the visit method.
-	 */
-	public void postorderVisit(NodeVisitor<E> visitor);
 }
