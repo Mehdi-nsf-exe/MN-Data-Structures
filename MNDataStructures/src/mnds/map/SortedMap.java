@@ -9,7 +9,7 @@ import mnds.list.List;
  * @param <K> The type of the keys of the map.
  * @param <V> The type of the values that will be contained in the map.
  */
-public interface SortedMap<K, V> extends Map<K, V> {
+public interface SortedMap<K extends Comparable<K>, V> extends Map<K, V> {
 
 	/**
 	 * Gets the entry with the least key.
