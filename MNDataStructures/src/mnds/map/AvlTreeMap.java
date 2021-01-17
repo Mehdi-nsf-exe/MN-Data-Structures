@@ -21,7 +21,7 @@ public class AvlTreeMap<K extends Comparable<K>, V> implements SortedMap<K, V> {
 	public void put(K key, V value) {
 		
 		if (root == null) {
-			root = new Node(new AvlTreeMapEntry(key, value), 1);
+			root = new Node(new AvlTreeMapEntry(key, value));
 			entryCount++;
 			return;
 		}
@@ -44,10 +44,10 @@ public class AvlTreeMap<K extends Comparable<K>, V> implements SortedMap<K, V> {
 		if (sameKeyFound) {
 			previousNode.entry.value = value;
 		} else if (key.compareTo(previousNode.entry.key) < 0) {
-			previousNode.leftChild = new Node(new AvlTreeMapEntry(key, value), 1);
+			previousNode.leftChild = new Node(new AvlTreeMapEntry(key, value));
 			entryCount++;
 		} else {
-			previousNode.rightChild = new Node(new AvlTreeMapEntry(key, value), 1);
+			previousNode.rightChild = new Node(new AvlTreeMapEntry(key, value));
 			entryCount++;
 		}
 	}
@@ -152,17 +152,17 @@ public class AvlTreeMap<K extends Comparable<K>, V> implements SortedMap<K, V> {
 	@Override
 	public List<Entry<K, V>> entries() {
 		List<Entry<K, V>> entriesList = new ArrayList<Entry<K, V>>(entryCount);
-		entriesPreorderRec(root, entriesList);
+		entriesInorderRec(root, entriesList);
 		return entriesList;
 	}
 	
-	public void entriesPreorderRec(Node node, List<Entry<K, V>> list) {
+	public void entriesInorderRec(Node node, List<Entry<K, V>> list) {
 		if (node == null) {
 			return;
 		}
+		entriesInorderRec(node.leftChild, list);
 		list.add(list.size() - 1, node.entry);
-		entriesPreorderRec(node.leftChild, list);
-		entriesPreorderRec(node.rightChild, list);
+		entriesInorderRec(node.rightChild, list);
 	}
 
 	@Override
@@ -195,11 +195,11 @@ public class AvlTreeMap<K extends Comparable<K>, V> implements SortedMap<K, V> {
 		if (node == null) {
 			return;
 		}
-		if (least.compareTo(node.entry.key) <= 0 && greatest.compareTo(node.entry.key) >= 0) {
-			list.add(list.size() - 1, node.entry);
-		}
 		if (node.leftChild != null && least.compareTo(node.leftChild.entry.key) <= 0) {
 			entriesInIntervalRec(node.leftChild, least, greatest, list);
+		}
+		if (least.compareTo(node.entry.key) <= 0 && greatest.compareTo(node.entry.key) >= 0) {
+			list.add(list.size() - 1, node.entry);
 		}
 		if (node.rightChild != null && greatest.compareTo(node.rightChild.entry.key) >= 0) {
 			entriesInIntervalRec(node.rightChild, least, greatest, list);
@@ -225,13 +225,10 @@ public class AvlTreeMap<K extends Comparable<K>, V> implements SortedMap<K, V> {
 			return;
 		}
 		
-		if (key.compareTo(node.entry.key) >= 0) {
-			list.add(list.size() - 1, node.entry);
-		}
-		
 		ascendentsUpToRec(node.leftChild, key, list);
 		
-		if (node.rightChild != null && key.compareTo(node.rightChild.entry.key) >= 0) {
+		if (key.compareTo(node.entry.key) >= 0) {
+			list.add(list.size() - 1, node.entry);
 			ascendentsUpToRec(node.rightChild, key, list);
 		}
 	}
@@ -252,12 +249,11 @@ public class AvlTreeMap<K extends Comparable<K>, V> implements SortedMap<K, V> {
 			return;
 		}
 		
-		if (key.compareTo(node.entry.key) <= 0) {
-			list.add(list.size() - 1, node.entry);
-		}
-		
 		if (node.leftChild != null && key.compareTo(node.leftChild.entry.key) <= 0) {
 			descendentsDownToRec(node.leftChild, key, list);
+		}
+		if (key.compareTo(node.entry.key) <= 0) {
+			list.add(list.size() - 1, node.entry);
 		}
 		descendentsDownToRec(node.rightChild, key, list);
 	}
@@ -321,15 +317,13 @@ public class AvlTreeMap<K extends Comparable<K>, V> implements SortedMap<K, V> {
 		private AvlTreeMapEntry entry;
 		private Node rightChild = null;
 		private Node leftChild = null;
-		private int height;
 		
 		/**
 		 * Creates a node with the indicated height.
 		 * @param Height The height of the node.
 		 */
-		private Node(AvlTreeMapEntry entry, int height) {
+		private Node(AvlTreeMapEntry entry) {
 			this.entry = entry;
-			this.height = height;
 		}
 	}
 }
