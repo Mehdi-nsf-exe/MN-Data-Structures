@@ -21,7 +21,7 @@ public class AvlTreeMap<K extends Comparable<K>, V> implements SortedMap<K, V> {
 	public void put(K key, V value) {
 		
 		if (root == null) {
-			root = new Node(new AvlTreeMapEntry(key, value), 1);
+			root = new Node(new AvlTreeMapEntry(key, value));
 			entryCount++;
 			return;
 		}
@@ -44,10 +44,10 @@ public class AvlTreeMap<K extends Comparable<K>, V> implements SortedMap<K, V> {
 		if (sameKeyFound) {
 			previousNode.entry.value = value;
 		} else if (key.compareTo(previousNode.entry.key) < 0) {
-			previousNode.leftChild = new Node(new AvlTreeMapEntry(key, value), 1);
+			previousNode.leftChild = new Node(new AvlTreeMapEntry(key, value));
 			entryCount++;
 		} else {
-			previousNode.rightChild = new Node(new AvlTreeMapEntry(key, value), 1);
+			previousNode.rightChild = new Node(new AvlTreeMapEntry(key, value));
 			entryCount++;
 		}
 	}
@@ -321,15 +321,13 @@ public class AvlTreeMap<K extends Comparable<K>, V> implements SortedMap<K, V> {
 		private AvlTreeMapEntry entry;
 		private Node rightChild = null;
 		private Node leftChild = null;
-		private int height;
 		
 		/**
 		 * Creates a node with the indicated height.
 		 * @param Height The height of the node.
 		 */
-		private Node(AvlTreeMapEntry entry, int height) {
+		private Node(AvlTreeMapEntry entry) {
 			this.entry = entry;
-			this.height = height;
 		}
 	}
 }
