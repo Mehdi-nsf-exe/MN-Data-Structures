@@ -152,17 +152,17 @@ public class AvlTreeMap<K extends Comparable<K>, V> implements SortedMap<K, V> {
 	@Override
 	public List<Entry<K, V>> entries() {
 		List<Entry<K, V>> entriesList = new ArrayList<Entry<K, V>>(entryCount);
-		entriesPreorderRec(root, entriesList);
+		entriesInorderRec(root, entriesList);
 		return entriesList;
 	}
 	
-	public void entriesPreorderRec(Node node, List<Entry<K, V>> list) {
+	public void entriesInorderRec(Node node, List<Entry<K, V>> list) {
 		if (node == null) {
 			return;
 		}
+		entriesInorderRec(node.leftChild, list);
 		list.add(list.size() - 1, node.entry);
-		entriesPreorderRec(node.leftChild, list);
-		entriesPreorderRec(node.rightChild, list);
+		entriesInorderRec(node.rightChild, list);
 	}
 
 	@Override
@@ -195,11 +195,11 @@ public class AvlTreeMap<K extends Comparable<K>, V> implements SortedMap<K, V> {
 		if (node == null) {
 			return;
 		}
-		if (least.compareTo(node.entry.key) <= 0 && greatest.compareTo(node.entry.key) >= 0) {
-			list.add(list.size() - 1, node.entry);
-		}
 		if (node.leftChild != null && least.compareTo(node.leftChild.entry.key) <= 0) {
 			entriesInIntervalRec(node.leftChild, least, greatest, list);
+		}
+		if (least.compareTo(node.entry.key) <= 0 && greatest.compareTo(node.entry.key) >= 0) {
+			list.add(list.size() - 1, node.entry);
 		}
 		if (node.rightChild != null && greatest.compareTo(node.rightChild.entry.key) >= 0) {
 			entriesInIntervalRec(node.rightChild, least, greatest, list);
@@ -225,13 +225,10 @@ public class AvlTreeMap<K extends Comparable<K>, V> implements SortedMap<K, V> {
 			return;
 		}
 		
-		if (key.compareTo(node.entry.key) >= 0) {
-			list.add(list.size() - 1, node.entry);
-		}
-		
 		ascendentsUpToRec(node.leftChild, key, list);
 		
-		if (node.rightChild != null && key.compareTo(node.rightChild.entry.key) >= 0) {
+		if (key.compareTo(node.entry.key) >= 0) {
+			list.add(list.size() - 1, node.entry);
 			ascendentsUpToRec(node.rightChild, key, list);
 		}
 	}
@@ -252,12 +249,11 @@ public class AvlTreeMap<K extends Comparable<K>, V> implements SortedMap<K, V> {
 			return;
 		}
 		
-		if (key.compareTo(node.entry.key) <= 0) {
-			list.add(list.size() - 1, node.entry);
-		}
-		
 		if (node.leftChild != null && key.compareTo(node.leftChild.entry.key) <= 0) {
 			descendentsDownToRec(node.leftChild, key, list);
+		}
+		if (key.compareTo(node.entry.key) <= 0) {
+			list.add(list.size() - 1, node.entry);
 		}
 		descendentsDownToRec(node.rightChild, key, list);
 	}
